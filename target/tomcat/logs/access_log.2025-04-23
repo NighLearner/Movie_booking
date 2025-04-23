@@ -1,9 +1,0 @@
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:12:56:27 +0530] "GET /movie HTTP/1.1" 302 - http-bio-8080-exec-1 0
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:12:56:28 +0530] "GET /movie/ HTTP/1.1" 200 4204 http-bio-8080-exec-2 1182
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:12:56:28 +0530] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-3 0
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:13:06:05 +0530] "GET /movie/book?movie=The%20Dark%20Knight&time=2:30%20PM HTTP/1.1" 200 2948 http-bio-8080-exec-5 128
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:13:06:16 +0530] "POST /movie/book HTTP/1.1" 200 2786 http-bio-8080-exec-6 103
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:13:06:24 +0530] "GET /movie/home HTTP/1.1" 200 4204 http-bio-8080-exec-7 6
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:13:06:27 +0530] "GET /movie/book?movie=The%20Dark%20Knight&time=2:30%20PM HTTP/1.1" 200 2948 http-bio-8080-exec-8 5
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:13:06:36 +0530] "POST /movie/book HTTP/1.1" 200 2788 http-bio-8080-exec-9 3
-0:0:0:0:0:0:0:1 - - [23/Apr/2025:13:06:39 +0530] "GET /movie/home HTTP/1.1" 200 4204 http-bio-8080-exec-10 3

@@ -1,26 +1,41 @@
 package com.example.servlets;
 
 import com.example.model.Movie;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import com.example.model.SeatBookingDAO;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "HomeServlet", value = "/home")
+@WebServlet("/home")
 public class HomeServlet extends HttpServlet {
+    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    public void init() throws ServletException {
+        super.init();
+        // Create seat bookings table if it doesn't exist
+        SeatBookingDAO.createTableIfNotExists();
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get all available movies
+        List<Movie> movies = Movie.getAllMovies();
         
-        // Create some sample movies
-        List<Movie> movies = new ArrayList<>();
-        movies.add(new Movie("Avengers: Endgame", "10:00 AM"));
-        movies.add(new Movie("The Dark Knight", "2:30 PM"));
-        movies.add(new Movie("Inception", "6:00 PM"));
-        
+        // Set movies as request attribute
         request.setAttribute("movies", movies);
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        
+        // Forward to index.jsp
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Just redirect to doGet for now
+        doGet(request, response);
     }
 }

@@ -1,116 +1,108 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.example.model.Movie" %>
+<%@ page import="java.util.List" %>
+
+<%
+    // Get movies from request attribute or fetch them
+    List<Movie> movies = (List<Movie>) request.getAttribute("movies");
+    if (movies == null) {
+        movies = Movie.getAllMovies();
+    }
+%>
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Movie Ticket Booking</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; 
-            padding: 0;
-            background-color: #121212;
-            color: #e1e1e1;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
             padding: 20px;
+            background-color: #f5f5f5;
         }
-        header {
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #333;
             text-align: center;
-            padding: 30px 0;
-            border-bottom: 1px solid #333;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
-        h1 { 
-            color: #bb86fc; 
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        .movies-grid {
+        
+        .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
-        .movie { 
-            background: #1e1e1e; 
-            border-radius: 10px; 
-            overflow: hidden;
-            transition: transform 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        
+        .movie-card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
         }
-        .movie:hover {
+        
+        .movie-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        .movie-poster {
-            height: 150px;
-            background: #2d2d2d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #bb86fc;
-            font-size: 1.2em;
-            text-align: center;
-        }
-        .movie-details {
-            padding: 15px;
-        }
-        .movie h3 { 
-            margin: 0 0 10px 0; 
-            color: #bb86fc;
-            font-size: 1.3em;
-        }
-        .movie p {
-            margin: 8px 0;
-            color: #b0b0b0;
-        }
-        .book-btn { 
-            display: inline-block;
-            background: #bb86fc; 
-            color: #121212; 
-            padding: 10px 15px; 
-            text-decoration: none; 
-            border-radius: 4px; 
+        
+        .movie-title {
+            font-size: 20px;
             font-weight: bold;
-            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .movie-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .movie-price {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        
+        .book-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
             transition: background-color 0.3s;
         }
-        .book-btn:hover {
-            background-color: #a370d8;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            color: #888;
+        
+        .book-button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Cinema Experience</h1>
-            <p>Book your tickets for the latest movies</p>
-        </header>
+        <h1>Movie Ticket Booking</h1>
         
-        <div class="movies-grid">
-            <c:forEach items="${movies}" var="movie">
-                <div class="movie">
-                    <div class="movie-poster">
-                        ${movie.title}
-                    </div>
-                    <div class="movie-details">
-                        <h3>${movie.title}</h3>
-                        <p>Show Time: ${movie.showTime}</p>
-                        <a href="book?movie=${movie.title}&time=${movie.showTime}" class="book-btn">Book Tickets</a>
-                    </div>
+        <div class="movie-grid">
+            <% for (Movie movie : movies) { %>
+                <div class="movie-card">
+                    <div class="movie-title"><%= movie.getTitle() %></div>
+                    <div class="movie-description"><%= movie.getDescription() %></div>
+                    <div class="movie-price">Price: $<%= movie.getPrice() %></div>
+                    <a href="BookingServlet?action=selectSeats&movieId=<%= movie.getId() %>" class="book-button">Book Tickets</a>
                 </div>
-            </c:forEach>
-        </div>
-        
-        <div class="footer">
-            <p>&copy; 2025 Cinema Experience. All rights reserved.</p>
+            <% } %>
         </div>
     </div>
 </body>
