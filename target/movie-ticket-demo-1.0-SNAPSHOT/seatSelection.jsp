@@ -235,8 +235,8 @@
     <script>
         // Store selected seats
         let selectedSeats = [];
-        const seatPrice = <%= seatPrice %>; // Using the pre-calculated value
-        
+        const seatPrice = movie.getPrice(); // Fixed: use movie.getPrice() directly
+
         function toggleSeat(seat) {
             const row = seat.getAttribute('data-row');
             const col = seat.getAttribute('data-col');
@@ -248,7 +248,7 @@
                 seat.classList.add('available');
                 
                 // Remove from selected seats
-                const index = selectedSeats.findIndex(s => s.row === row && s.column === col);
+                const index = selectedSeats.findIndex(s => s.id === seatId);
                 if (index > -1) {
                     selectedSeats.splice(index, 1);
                 }
@@ -267,7 +267,7 @@
             
             updateSelectedSeatsDisplay();
         }
-        
+
         function updateSelectedSeatsDisplay() {
             const displayElement = document.getElementById('selectedSeatsDisplay');
             const seatsInput = document.getElementById('selectedSeats');

@@ -10,12 +10,14 @@
     <servlet>
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>com.example.servlets.HomeServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     
-    <servlet>
+    <!-- <servlet>
         <servlet-name>BookingServlet</servlet-name>
         <servlet-class>com.example.servlets.BookingServlet</servlet-class>
-    </servlet>
+        <load-on-startup>1</load-on-startup>
+    </servlet> -->
     
     <!-- Servlet Mappings -->
     <servlet-mapping>
@@ -23,14 +25,14 @@
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
     
-    <servlet-mapping>
+    <!-- <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
         <url-pattern>/BookingServlet</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
     
     <!-- Welcome File List -->
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>home</welcome-file>
     </welcome-file-list>
     
     <!-- Session Configuration -->

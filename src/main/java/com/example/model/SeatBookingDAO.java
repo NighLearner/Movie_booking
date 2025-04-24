@@ -1,17 +1,16 @@
 package com.example.model;
 
+import com.example.config.DatabaseConfig;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SeatBookingDAO {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/movie_tickets";
-    private static final String DB_USER = "username";
-    private static final String DB_PASSWORD = "password";
     
     // Create the table if it doesn't exist
     public static void createTableIfNotExists() {
-        try (Connection conn = getConnection()) {
+        try (Connection conn = DatabaseConfig.getConnection()) {
             Statement stmt = conn.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS seat_bookings (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY," +
@@ -32,7 +31,7 @@ public class SeatBookingDAO {
     public static boolean bookSeat(SeatBooking booking) {
         createTableIfNotExists();
         
-        try (Connection conn = getConnection()) {
+        try (Connection conn = DatabaseConfig.getConnection()) {
             String sql = "INSERT INTO seat_bookings (movie_id, row_num, column_num, user_id) VALUES (?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, booking.getMovieId());
@@ -53,7 +52,7 @@ public class SeatBookingDAO {
         createTableIfNotExists();
         List<SeatBooking> bookedSeats = new ArrayList<>();
         
-        try (Connection conn = getConnection()) {
+        try (Connection conn = DatabaseConfig.getConnection()) {
             String sql = "SELECT * FROM seat_bookings WHERE movie_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, movieId);
@@ -80,7 +79,7 @@ public class SeatBookingDAO {
     public static boolean isSeatBooked(int movieId, int row, int column) {
         createTableIfNotExists();
         
-        try (Connection conn = getConnection()) {
+        try (Connection conn = DatabaseConfig.getConnection()) {
             String sql = "SELECT COUNT(*) FROM seat_bookings WHERE movie_id = ? AND row_num = ? AND column_num = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, movieId);
@@ -96,10 +95,5 @@ public class SeatBookingDAO {
         }
         
         return false;
-    }
-    
-    // Get connection to database
-    private static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 }

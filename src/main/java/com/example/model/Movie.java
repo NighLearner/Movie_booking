@@ -1,9 +1,26 @@
 package com.example.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Movie {
+    private static Map<Integer, Movie> movieDatabase = new HashMap<>();
+    private static int nextId = 1;
+    
+    static {
+        // Initialize with some sample movies
+        addMovie(new Movie("Inception", "A thief who steals corporate secrets through dream-sharing technology.", "7:30 PM", 12.99));
+        addMovie(new Movie("The Shawshank Redemption", "Two imprisoned men bond over a number of years.", "6:00 PM", 10.99));
+        addMovie(new Movie("The Dark Knight", "Batman fights the menace known as the Joker.", "8:45 PM", 11.99));
+    }
+    
+    private static void addMovie(Movie movie) {
+        movie.id = nextId++;
+        movieDatabase.put(movie.id, movie);
+    }
+    
     private int id;
     private String title;
     private String description;
@@ -11,33 +28,20 @@ public class Movie {
     private double price;
     private String[] seatTypes = {"Gold", "Silver", "Platinum"};
     
-    // Sample movie data (in a real app this would come from a database)
-    private static final Movie[] MOVIES = {
-        new Movie(1, "Avengers: Endgame", "Epic conclusion to the Infinity Saga", "7:00 PM", 12.99),
-        new Movie(2, "The Lion King", "Live-action remake of the Disney classic", "5:30 PM", 10.99),
-        new Movie(3, "Joker", "The story of the infamous villain", "8:30 PM", 11.99)
-    };
-    
-    public Movie(int id, String title, String description, String showTime, double price) {
-        this.id = id;
+    public Movie(String title, String description, String showTime, double price) {
         this.title = title;
         this.description = description;
         this.showTime = showTime;
         this.price = price;
     }
     
-    // Static methods to retrieve movies
+    // Static methods to access the movie database
     public static Movie getMovieById(int id) {
-        for (Movie movie : MOVIES) {
-            if (movie.getId() == id) {
-                return movie;
-            }
-        }
-        return null;
+        return movieDatabase.get(id);
     }
     
     public static List<Movie> getAllMovies() {
-        return Arrays.asList(MOVIES);
+        return new ArrayList<>(movieDatabase.values());
     }
     
     // Getters and Setters
@@ -63,5 +67,10 @@ public class Movie {
     
     public String[] getSeatTypes() {
         return seatTypes;
+    }
+    
+    @Override
+    public String toString() {
+        return title;
     }
 }
