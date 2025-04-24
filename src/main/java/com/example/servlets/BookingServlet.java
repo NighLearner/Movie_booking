@@ -45,6 +45,7 @@ public class BookingServlet extends HttpServlet {
             // Handle seat booking
             int movieId = Integer.parseInt(request.getParameter("movieId"));
             String selectedSeatsParam = request.getParameter("selectedSeats");
+            Movie movie = Movie.getMovieById(movieId);
             
             // Get or create user ID from session
             HttpSession session = request.getSession(true);
@@ -93,9 +94,8 @@ public class BookingServlet extends HttpServlet {
                     }
                 }
                 
-                if (allSeatsBooked && !bookings.isEmpty()) {
+                if (allSeatsBooked && !bookings.isEmpty() && movie != null) {
                     // Calculate total price
-                    Movie movie = Movie.getMovieById(movieId);
                     double totalPrice = movie.getPrice() * bookings.size();
                     
                     // Store booking details in session for confirmation page
@@ -106,9 +106,9 @@ public class BookingServlet extends HttpServlet {
                     // Redirect to confirmation page
                     response.sendRedirect("bookingConfirmation.jsp");
                 } else {
-                    // Some seats were already taken, redirect back to seat selection
-                    request.setAttribute("errorMessage", "Some seats are no longer available. Please try again.");
-                    response.sendRedirect("BookingServlet?action=selectSeats&movieId=" + movieId);
+                    // Some seats were already taken or movie not found, redirect back to seat selection
+                    request.setAttribute("errorMessage", "Some seats are no longer available or an error occurred. Please try again.");
+                    request.getRequestDispatcher("seatSelection.jsp?movieId=" + movieId).forward(request, response);
                 }
             } else {
                 // No seats selected

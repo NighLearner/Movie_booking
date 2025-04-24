@@ -235,7 +235,7 @@
     <script>
         // Store selected seats
         let selectedSeats = [];
-        const seatPrice = <%= String.format("%.2f", seatPrice) %>; // Using the pre-calculated value
+        const seatPrice = <%= seatPrice %>; // Using the pre-calculated value
         
         function toggleSeat(seat) {
             const row = seat.getAttribute('data-row');
